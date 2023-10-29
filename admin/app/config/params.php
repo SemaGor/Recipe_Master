@@ -18,9 +18,13 @@ define('DISPATCHER_NAME', 'index.php');
 // Définissions des titres
 define('TITRE_USERS_DASHBOARD', "Dashboard");
 define('TITRE_USERS_INDEX', "Liste des utilisateurs");
-define('TITRE_USERS_ADDFORM', "Ajout d'utilisateurs");
+define('TITRE_USERS_ADDFORM', "Ajout d'utilisateur");
+define('TITRE_USERS_EDITFORM', "Modification d'utilisateur");
+
 
 define('TITRE_RECIPES_INDEX', "Liste Des Recettes");
+define('TITRE_RECIPES_ADDFORM', "Ajout De Recette");
+define('TITRE_RECIPES_EDITFORM', "Modification De Recette");
 
 define('TITRE_CATEGORIES_INDEX', "Liste Des Categories");
 

@@ -34,6 +34,38 @@ function findAllRecipes(\PDO $connexion): array
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
 }
 
+function findOneById(\PDO $connexion, int $id): array
+{
+    $sql = "SELECT 
+            d.id AS dish_id,
+            d.name AS dish_name,
+            d.description AS dish_description,
+            d.prep_time AS dish_prep_time,
+            d.portions AS dish_portions,
+            u.name as user_name, 
+            u.id as user_id
+            FROM dishes d
+            JOIN users u on u.id = d.user_id
+            WHERE d.id =:id;
+            ";
+    $rs = $connexion->prepare($sql);
+    $rs->bindValue(':id', $id, \PDO::PARAM_INT);
+    $rs->execute();
+
+    return $rs->fetch(\PDO::FETCH_ASSOC);
+}
+
+function findIngByDishId(\PDO $connexion, int $id): array
+{
+    $sql = "SELECT ingredient_id
+    FROM dishes_has_ingredients
+    WHERE dish_id = :id;";
+    $rs = $connexion->prepare($sql);
+    $rs->bindValue(':id', $id, \PDO::PARAM_INT);
+    $rs->execute();
+    return $rs->fetchAll(\PDO::FETCH_COLUMN);
+}
+
 function insert(\PDO $connexion, array $data): int
 {
     $sql = "INSERT INTO dishes
@@ -89,5 +121,26 @@ function delete(\PDO $connexion, int $id): bool
     $rs = $connexion->prepare($sql);
     $rs->bindParam(":id", $id, \PDO::PARAM_INT);
    
+    return $rs->execute();
+}
+
+function update(\PDO $connexion, array $data)
+{
+    $sql = "UPDATE dishes
+            SET name = :name
+            WHERE id = :id;
+           ";
+
+    $rs = $connexion->prepare($sql);
+    
+    // Liaison de la valeur 'dish_name' du tableau de données à la variable :name dans la requête SQL.
+    $rs->bindValue(":name", $data["dish_name"], \PDO::PARAM_STR);
+    
+    // Liaison de la valeur 'dish_id' du tableau de données à la variable :id dans la requête SQL.
+    $rs->bindValue(":id", $data["dish_id"], \PDO::PARAM_INT);
+
+    //par exemple où l'id est 3
+    // bindValue va dire "prend ce que tu as dans $data['user_name'] et associe le au champ :name de ma table (où l'id est 3) 
+
     return $rs->execute();
 }

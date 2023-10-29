@@ -41,11 +41,14 @@
             <?php echo $allUser['bio'] ?>
           </td>
           <td>
-            <button type="button" class="edit"> Modifier </button>
             
+              <a href="<?php echo ADMIN_ROOT; ?>/users/edit/form/<?php echo $allUser['user_id'] ?>"
+                 class="delete btn btn-alert">
+                Modifier 
+              </a>
               <a href="<?php echo ADMIN_ROOT; ?>/users/delete/<?php echo $allUser['user_id'] ?>"
-              class="btn btn-danger">
-              Supprimer 
+                 class="delete btn btn-danger">
+                 Supprimer 
               </a>
         
           </td>
