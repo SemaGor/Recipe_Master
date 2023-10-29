@@ -72,3 +72,28 @@ function deleteAction(\PDO $connexion, int $id)
     header('location: ' . ADMIN_ROOT . '/users');
 }
 
+function editFormAction(\PDO $connexion, int $id)
+{
+    // Je demande au modèle de modifier l'utilisateur
+    include_once '../app/models/usersModel.php';
+    $user = UsersModel\findOneById($connexion, $id);
+        
+    // Je charge la vue editForm dans $content
+    global $title, $content;
+    $title = "TITRE_USERS_EDITFORM";
+    ob_start();
+        include '../app/views/users/editForm.php';
+    $content = ob_get_clean();
+}
+
+function editAction(\PDO $connexion, array $data = null)
+{
+    // Je demande au modèle de mettre à jour l'utilisateur
+    include_once '../app/models/usersModel.php';
+    $return = UsersModel\update($connexion, $data);
+        
+    //Je redirige vers la liste des utilisateurs
+    
+    header('location: ' . ADMIN_ROOT . '/users');
+
+}

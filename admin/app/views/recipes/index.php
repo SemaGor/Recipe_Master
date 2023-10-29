@@ -1,14 +1,7 @@
-<?php
-
-namespace Core\Tools;
-
-use Core\Tools;
-
-?>
 <h1>
   <?php echo TITRE_RECIPES_INDEX ?>
 </h1>
-<a href="<?php echo ADMIN_ROOT; ?>/recipes/add/form"type="button" class="add"> Ajouter une recette </a>
+<a href="<?php echo ADMIN_ROOT; ?>/recipes/add/form" class="add"> Ajouter une recette </a>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -62,7 +55,10 @@ use Core\Tools;
         </td>
 
         <td>
-          <button type="button" class="edit"> Modifier </button>
+          <a href="<?php echo ADMIN_ROOT; ?>/recipes/edit/form/<?php echo $allRecipe['dish_id'] ?>" 
+             class="edit">
+             Modifier
+          </a>
           <a href="<?php echo ADMIN_ROOT; ?>/recipes/delete/<?php echo $allRecipe['dish_id'] ?>" 
              class="btn btn-danger">
              Supprimer

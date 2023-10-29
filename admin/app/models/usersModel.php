@@ -26,6 +26,25 @@ function findAllUsers(\PDO $connexion): array
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
 }
 
+function findOneById(\PDO $connexion, int $id): array
+{
+    $sql = "SELECT 
+                u.id AS user_id,
+                u.name AS user_name,
+                u.email AS user_email,
+                u.biography AS user_biography,
+                u.picture AS user_picture,
+                u.created_at AS user_creation_date
+            FROM users u
+            WHERE u.id = :id";
+
+    $rs = $connexion->prepare($sql);
+    $rs->bindValue(':id', $id, \PDO::PARAM_INT);
+    $rs->execute();
+
+    return $rs->fetch(\PDO::FETCH_ASSOC);
+}
+
 function insert(\PDO $connexion, array $data = null)
 {
     $data['created_at'] = date('Y-m-d H:i:s');
@@ -86,5 +105,26 @@ function delete(\PDO $connexion, int $id): bool
     $rs = $connexion->prepare($sql);
     $rs->bindParam(":id", $id, \PDO::PARAM_INT);
     
+    return $rs->execute();
+}
+
+function update(\PDO $connexion, array $data)
+{
+    $sql = "UPDATE users 
+            SET name = :name
+            WHERE id = :id;
+           ";
+
+    $rs = $connexion->prepare($sql);
+    
+    // Liaison de la valeur 'user_name' du tableau de données à la variable :name dans la requête SQL.
+    $rs->bindValue(":name", $data["user_name"], \PDO::PARAM_STR);
+    
+    // Liaison de la valeur 'user_id' du tableau de données à la variable :id dans la requête SQL.
+    $rs->bindValue(":id", $data["user_id"], \PDO::PARAM_INT);
+
+    //par exemple où l'id est 3
+    // bindValue va dire "prend ce que tu as dans $data['user_name'] et associe le au champ :name de ma table (où l'id est 3) 
+
     return $rs->execute();
 }

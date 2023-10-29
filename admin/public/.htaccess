@@ -15,12 +15,12 @@ RewriteEngine on
     # TARGET: ?users=index
     RewriteRule ^users$ index.php?users=index [L]
 
-    # AJOUT DE USERS
+    # AJOUT DE USERS: FORMULAIRE
     # PATTERN: /users/add/form
     # TARGET: ?users=addForm
     RewriteRule ^users\/add\/form$ index.php?users=addForm [L]
 
-    # INSERTION DE USERS
+    # INSERTION DE USERS: INSERT
     # PATTERN: /users/add/insert
     # TARGET: ?users=add
     RewriteRule ^users\/add\/insert$ index.php?users=add [L]
@@ -30,6 +30,15 @@ RewriteEngine on
     # TARGET: ?users=delete&id=x
     RewriteRule ^users\/delete\/([1-9][0-9]*)$ index.php?users=delete&id=$1 [L]
 
+    # MODIFICATION DE USERS: FORMULAIRE
+    # PATTERN: /users/edit/form/x
+    # TARGET: ?users=editForm&id=x
+    RewriteRule ^users\/edit\/form\/([1-9][0-9]*)$ index.php?users=editForm&id=$1 [L]
+
+    # MODIFICATION DE USERS: UPDATE
+    # PATTERN: /users/edit
+    # TARGET: ?users=edit
+    RewriteRule ^users\/edit$ index.php?users=edit [L]
 #--------------------------------------------------
 # ROUTE DES RECETTES
 # --------------------------------------------------
@@ -52,6 +61,16 @@ RewriteEngine on
     # PATTERN: /recipes/delete/x
     # TARGET: ?recipes=delete&id=x
     RewriteRule ^recipes\/delete\/([1-9][0-9]*)$ index.php?recipes=delete&id=$1 [L]
+
+    # MODIFICATION DE RECETTE: FORMULAIRE
+    # PATTERN: /recipes/edit/form/x
+    # TARGET: ?recipes=editForm&id=x
+    RewriteRule ^recipes\/edit\/form\/([1-9][0-9]*)$ index.php?recipes=editForm&id=$1 [L]
+
+    # MODIFICATION DE RECETTE: UPDATE
+    # PATTERN: /recipes/edit
+    # TARGET: ?recipes=edit
+    RewriteRule ^recipes\/edit$ index.php?recipes=edit [L]
 
 #--------------------------------------------------
 # ROUTE DES CATEGORIES

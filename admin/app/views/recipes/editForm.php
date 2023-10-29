@@ -1,38 +1,55 @@
-<div class="page-header mt-3">
-    <h1>Ajout d'une recette</h1>
+<div class="page-header">
+    <h1><?php echo TITRE_RECIPES_EDITFORM ?></h1>
 </div>
-<div class="mb-3">
-    <a href="<?php echo ADMIN_ROOT; ?>/recipes" class="btn btn-secondary">Retour à la liste des recettes</a>
+<div>
+    <a href="<?php echo ADMIN_ROOT; ?>/recipes">Retour à la liste des recettes</a> <br><br>
 </div>
-<div class="card bg-gray mb-3">
-    <div class="card-body">
-        <form action="<?php echo ADMIN_ROOT; ?>/recipes/add/insert" method="post" class="form-horizontal">
-            <fieldset>
-            <legend>Données de la recette</legend>
+<form 
+    action="<?php echo ADMIN_ROOT; ?>/recipes/edit"
+    method="post"
+    class="edit">
 
-<div class="form-group row">
-    <label for="name" class="col-sm-2 col-form-label">Name</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" id="name" name="name" placeholder="Name" />
-    </div>
-</div>
+    <fieldset>
+        <legend>Données de la Recette</legend>
+        <div>
+            <label for="test">Name</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="dish_name" 
+                name="name" 
+                value="<?php echo $recipe['dish_name']; ?>" />
+            
+            <input 
+                type="hidden" 
+                id="dish_id" 
+                name="dish_id" 
+                value="<?php echo $recipe['dish_id']; ?>" />
 
-<div class="form-group row">
-    <label for="description" class="col-sm-2 col-form-label">Description</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" id="description" name="description"
-            placeholder="Description" />
-    </div>
-</div>
+            <label for="test">Description</label>
+            <input 
+                type="text" 
+                id="dish_description" 
+                name="dish_description" 
+                value="<?php echo $recipe['dish_description']; ?>" />
+            
+            <label for="test">Time</label>
+            <input 
+                type="text" 
+                id="dish_prep_time" 
+                name="dish_prep_time" 
+                value="<?php echo $recipe['dish_prep_time']; ?>" />
+            
+            <label for="test">Portions</label>
+            <input 
+                type="number" 
+                id="dish_portions" 
+                name="dish_portions" value="<?php echo $dish['dish_portions']; ?>" />
+            <br><br>
+            
+    </fieldset>
 
-<div class="form-group row">
-    <label for="prep_time" class="col-sm-2 col-form-label">Preparation time</label>
-    <div class="col-sm-10">
-        <input type="time" class="form-control" id="prep_time" name="prep_time" />
-    </div>
-</div>
-                
-                <div class="form-group row">
+    <!-- <div class="form-group row">
                     <label for="user_id" class="col-sm-2 col-form-label">Chef</label>
                     <div class="col-sm-10">
                         <select class="form-control" name="user_id" id="user_id">
@@ -57,11 +74,11 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <fieldset>
                     <legend>Ingrédients</legend>
                     <?php include_once '../app/models/ingredientsModel.php'; ?>
-                    <?php foreach ($allIngredients as $ingredient): ?>
+                    <?php foreach ($ingredients as $ingredient): ?>
                         <div class="form-group row align-items-center">
                             <div class="col-md-1">
                                 <input type="checkbox" name="ingredients[]" value="<?php echo $ingredient['ingr_id']; ?>"
@@ -85,13 +102,12 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
-                </fieldset>
+                </fieldset> -->
+
+
                 <div class="form-group row">
                     <div class="col-sm-offset-2 col-sm-10">
                         <input type="submit" class="btn btn-lg btn-primary" />
                     </div>
                 </div>
-            </fieldset>
-        </form>
-    </div>
-</div>
+</form>
