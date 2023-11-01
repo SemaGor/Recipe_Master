@@ -35,7 +35,9 @@ switch ($_GET['users']):
           
         UsersController\editAction($connexion, [
             'user_id' => $_POST['user_id'],
-            'user_name' => $_POST['user_name']]);
+            'user_name' => $_POST['user_name'],
+            'user_biography' => $_POST['user_biography']
+        ]);
         break;
 
     default:

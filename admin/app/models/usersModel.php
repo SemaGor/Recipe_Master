@@ -23,7 +23,12 @@ function findAllUsers(\PDO $connexion): array
             ";
 
     $rs = $connexion->query($sql);
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $allUsers = $rs->fetchAll(\PDO::FETCH_ASSOC);
+
+     // Débogage : Afficher le contenu de $allUsers
+    //  var_dump($allUsers); // Utilisez cette ligne pour afficher le contenu
+     return $allUsers;
+ 
 }
 
 function findOneById(\PDO $connexion, int $id): array
@@ -111,7 +116,8 @@ function delete(\PDO $connexion, int $id): bool
 function update(\PDO $connexion, array $data)
 {
     $sql = "UPDATE users 
-            SET name = :name
+            SET name = :name,
+                biography = :biography
             WHERE id = :id;
            ";
 
@@ -119,6 +125,8 @@ function update(\PDO $connexion, array $data)
     
     // Liaison de la valeur 'user_name' du tableau de données à la variable :name dans la requête SQL.
     $rs->bindValue(":name", $data["user_name"], \PDO::PARAM_STR);
+
+    $rs->bindValue(":biography", $data["user_biography"], \PDO::PARAM_STR);
     
     // Liaison de la valeur 'user_id' du tableau de données à la variable :id dans la requête SQL.
     $rs->bindValue(":id", $data["user_id"], \PDO::PARAM_INT);

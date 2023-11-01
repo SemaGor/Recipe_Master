@@ -27,6 +27,13 @@
                             id="user_id" 
                             name="user_id" 
                             value="<?php echo $user['user_id']; ?>" />
+                    <label for="user_name" class="col-sm-2 control-label">Biography</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="user_biography" 
+                            name="user_biography" 
+                            value="<?php echo $user['user_biography']; ?>" />
                     </div>
                 </div>
                 <div class="form-group">

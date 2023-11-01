@@ -92,10 +92,9 @@ function editFormAction(\PDO $connexion, int $id)
     include_once '../app/models/categoriesModel.php';
     $categories = \App\Models\CategoriesModel\findAllCategories($connexion);
 
-    // chercher les ingrédients
+    // chercher les ingrédients associés à cette recette
     include_once '../app/models/ingredientsModel.php';
-    $ingredients = \App\Models\IngredientsModel\findAllIngredients($connexion);
-
+    $ingredients = \App\Models\IngredientsModel\findAllIngredients($connexion, $id);
 
     // Je charge la vue editForm dans $content
     global $title, $content;
@@ -107,12 +106,25 @@ function editFormAction(\PDO $connexion, int $id)
 
 function editAction(\PDO $connexion, array $data = null)
 {
-   // Je demande au modèle de mettre à jour la recette
-    include_once '../app/models/recipesModel.php';
-    $return = RecipesModel\update($connexion, $data);
-        
-    //Je redirige vers la liste des recettes
-    
-    header('location: ' . ADMIN_ROOT . '/recipes');
+   include_once '../app/models/recipesModel.php';
+   include_once '../app/models/usersModel.php';
+   include_once '../app/models/categoriesModel.php';
+   include_once '../app/models/ingredientsModel.php';
 
+   $data = [
+    'user_id' => $_POST['user_id'],
+    'dish_id' => $_POST['dish_id'],
+    'dish_name' => $_POST['dish_name'],
+    'dish_description' => $_POST['dish_description'],
+    'dish_prep_time' => $_POST['dish_prep_time'],
+    'portions' => $_POST['dish_portions'],
+    'type_id' => $_POST['type_id']
+    ];
+
+   
+   // Je demande au modèle de mettre à jour la recette
+   $return = RecipesModel\update($connexion, $data);
+
+       // La mise à jour a réussi, vous pouvez rediriger ou effectuer d'autres actions.
+       header('location: ' . ADMIN_ROOT . '/recipes');
 }

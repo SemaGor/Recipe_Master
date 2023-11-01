@@ -42,10 +42,13 @@ function findOneById(\PDO $connexion, int $id): array
             d.description AS dish_description,
             d.prep_time AS dish_prep_time,
             d.portions AS dish_portions,
+            d.type_id AS category_id,
+            t.name AS category_name,
             u.name as user_name, 
             u.id as user_id
             FROM dishes d
             JOIN users u on u.id = d.user_id
+            LEFT JOIN types_of_dishes t ON d.type_id = t.id
             WHERE d.id =:id;
             ";
     $rs = $connexion->prepare($sql);
@@ -124,23 +127,28 @@ function delete(\PDO $connexion, int $id): bool
     return $rs->execute();
 }
 
+
 function update(\PDO $connexion, array $data)
 {
     $sql = "UPDATE dishes
-            SET name = :name
-            WHERE id = :id;
-           ";
+            SET name = :dish_name,
+                description = :dish_description,
+                prep_time = :dish_prep_time,
+                portions = :dish_portions,
+                user_id = :user_id,
+                type_id = :type_id
+            WHERE id = :dish_id;
+    ";
 
     $rs = $connexion->prepare($sql);
-    
-    // Liaison de la valeur 'dish_name' du tableau de données à la variable :name dans la requête SQL.
-    $rs->bindValue(":name", $data["dish_name"], \PDO::PARAM_STR);
-    
-    // Liaison de la valeur 'dish_id' du tableau de données à la variable :id dans la requête SQL.
-    $rs->bindValue(":id", $data["dish_id"], \PDO::PARAM_INT);
 
-    //par exemple où l'id est 3
-    // bindValue va dire "prend ce que tu as dans $data['user_name'] et associe le au champ :name de ma table (où l'id est 3) 
+    $rs->bindValue(":dish_name", isset($data["dish_name"]) ? $data["dish_name"] : null, \PDO::PARAM_STR);
+    $rs->bindValue(":dish_description", isset($data["dish_description"]) ? $data["dish_description"] : null, \PDO::PARAM_STR);
+    $rs->bindValue(":dish_prep_time", isset($data["dish_prep_time"]) ? $data["dish_prep_time"] : null, \PDO::PARAM_STR);
+    $rs->bindValue(":dish_portions", isset($data["dish_portions"]) ? $data["dish_portions"] : null, \PDO::PARAM_INT);
+    $rs->bindValue(":user_id", isset($data["user_id"]) ? $data["user_id"] : null, \PDO::PARAM_INT);
+    $rs->bindValue(":type_id", isset($data["type_id"]) ? $data["type_id"] : null, \PDO::PARAM_INT);
+    $rs->bindValue(":dish_id", isset($data["dish_id"]) ? $data["dish_id"] : null, \PDO::PARAM_INT);
 
     return $rs->execute();
 }
