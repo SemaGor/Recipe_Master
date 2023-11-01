@@ -27,5 +27,7 @@ define('TITRE_RECIPES_ADDFORM', "Ajout De Recette");
 define('TITRE_RECIPES_EDITFORM', "Modification De Recette");
 
 define('TITRE_CATEGORIES_INDEX', "Liste Des Categories");
+define('TITRE_CATEGORIES_ADDFORM', "Ajout De Categorie");
+define('TITRE_CATEGORIES_EDITFORM', "Modification De Categories");
 
 define('TITRE_INGREDIENTS_INDEX', "Liste Des Ingrédients");

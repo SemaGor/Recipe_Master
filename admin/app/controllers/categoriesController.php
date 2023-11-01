@@ -21,3 +21,23 @@ function indexAction(\PDO $connexion)
     $content = ob_get_clean();
 
 }
+
+function addFormAction()
+{
+    global $title, $content;
+    $title = "TITRE_CATEGORIES_ADDFORM";
+    ob_start();
+    include '../app/views/categories/addForm.php';
+    $content = ob_get_clean();
+
+}
+
+function addAction(\PDO $connexion, array $data = null)
+{
+    // Je demande au modèle d'ajouter la catégorie
+    include_once '../app/models/categoriesModel.php';
+    $id = CategoriesModel\insert($connexion, $data);
+
+    // Je redirige vers la liste des utilisateurs
+    header('location: ' . ADMIN_ROOT . '/categories');
+}

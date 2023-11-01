@@ -80,6 +80,21 @@ RewriteEngine on
     # TARGET: ?categories=index
     RewriteRule ^categories$ index.php?categories=index [L]
 
+    # AJOUT DE CATEGORIES
+    # PATTERN: /categories/add/form
+    # TARGET: ?categories=addForm
+    RewriteRule ^categories\/add\/form$ index.php?categories=addForm [L]
+
+    # INSERTION DE CATEGORIES
+    # PATTERN: /categories
+    # TARGET: ?categories=index
+    RewriteRule ^categories\/add\/insert$ index.php?categories=add [L]
+
+    # MODIFICATION DE CATEGORIE: FORMULAIRE
+    # PATTERN: /categories/edit/form/x
+    # TARGET: ?categories=editForm&id=x
+    RewriteRule ^cayegories\/edit\/form\/([1-9][0-9]*)$ index.php?categories=editForm&id=$1 [L]
+
 #--------------------------------------------------
 # ROUTE DES INGREDIENTS
 # --------------------------------------------------
