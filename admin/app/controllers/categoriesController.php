@@ -65,3 +65,12 @@ function editAction(\PDO $connexion, int $category_id, array $data)
     $return = CategoriesModel\update($connexion,$category_id, $data);
     header('location: ' . ADMIN_ROOT . '/categories');
 }
+
+function deleteAction(\PDO $connexion, int $id)
+ {
+    include_once '../app/models/categoriesModel.php';
+
+    $return = CategoriesModel\delete($connexion, $id);
+
+    header('location: '. ADMIN_ROOT . '/categories');
+}

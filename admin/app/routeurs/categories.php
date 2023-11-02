@@ -26,9 +26,7 @@ switch ($_GET['categories']):
         CategoriesController\editAction($connexion, (int)$_POST['category_id'], [
             'name' => $_POST['category_name'],
             'description' => $_POST['category_description']
-    ]);
-
-
+        ]);
         break;
 
     case 'delete':
