@@ -1,8 +1,8 @@
 <div class="page-header mt-3">
-    <h1>Ajout d'un utilisateur</h1>
+    <h1>Ajout d'une catégorie</h1>
 </div>
 <div class="mb-3">
-    <a href="<?php echo ADMIN_ROOT; ?>/users" class="btn btn-secondary">Retour à la liste des utilisateurs</a>
+    <a href="<?php echo ADMIN_ROOT; ?>/categories" class="btn btn-secondary">Retour à la liste des catégories</a>
 </div>
 <div class="card bg-gray mb-3">
     <div class="card-body">

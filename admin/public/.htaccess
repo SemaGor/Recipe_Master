@@ -93,11 +93,21 @@ RewriteEngine on
     # MODIFICATION DE CATEGORIE: FORMULAIRE
     # PATTERN: /categories/edit/form/x
     # TARGET: ?categories=editForm&id=x
-    RewriteRule ^cayegories\/edit\/form\/([1-9][0-9]*)$ index.php?categories=editForm&id=$1 [L]
+    RewriteRule ^categories\/edit\/form\/([1-9][0-9]*)$ index.php?categories=editForm&id=$1 [L]
 
-#--------------------------------------------------
-# ROUTE DES INGREDIENTS
-# --------------------------------------------------
+    # MODIFICATION DE CATEGORIE: UPDATE
+    # PATTERN: /categories/edit
+    # TARGET: ?categories=edit
+    RewriteRule ^categories\/edit$ index.php?categories=edit [L]
+
+    # SUPPRESSION DE CATEGORIE
+    # PATTERN: /categories/delete/x
+    # TARGET: ?categories=delete&id=x
+    RewriteRule ^categories\/delete\/([1-9][0-9]*)$ index.php?categories=delete&id=$1 [L]
+
+    #--------------------------------------------------
+    # ROUTE DES INGREDIENTS
+    # --------------------------------------------------
     # LISTE DES INGREDIENTS
     # PATTERN: /ingredients
     # TARGET: ?ingredients=index

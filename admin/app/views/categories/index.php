@@ -31,8 +31,11 @@ use Core\Tools;
                     <?php echo $category['category_description'] ?>
                 </td>
                 <td>
-                    <button type="button" class="edit"> Modifier </button>
-                    <button type="button" class="delete"> Supprimer </button>
+                <a href="<?php echo ADMIN_ROOT; ?>/categories/edit/form/<?php echo $category['category_id'] ?>" class= edit>Modifier</a>
+                <a href="<?php echo ADMIN_ROOT; ?>/categories/delete/<?php echo $category['category_id'] ?>"
+                 class="delete btn btn-danger">
+                 Supprimer 
+              </a>
                 </td>
             </tr>
         <?php endforeach; ?>
