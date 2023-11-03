@@ -29,6 +29,6 @@ function homeAction(\PDO $connexion)
     $title = "TITRE_ACCUEIL"; //ça ne vient pas de la bdd et ça apparaît dans l'onglet du serveur.
 
     ob_start();
-    include '../app/views/pages/home.php';
+        include '../app/views/pages/home.php';
     $content = ob_get_clean();
 }

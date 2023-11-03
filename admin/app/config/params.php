@@ -23,12 +23,12 @@ define('TITRE_USERS_ADDFORM', "Ajout d'utilisateur");
 define('TITRE_USERS_EDITFORM', "Modification d'utilisateur");
 
 
-define('TITRE_RECIPES_INDEX', "Liste Des Recettes");
-define('TITRE_RECIPES_ADDFORM', "Ajout De Recette");
-define('TITRE_RECIPES_EDITFORM', "Modification De Recette");
+define('TITRE_RECIPES_INDEX', "Liste des Recettes");
+define('TITRE_RECIPES_ADDFORM', "Ajout de Recette");
+define('TITRE_RECIPES_EDITFORM', "Modification de Recette");
 
-define('TITRE_CATEGORIES_INDEX', "Liste Des Categories");
-define('TITRE_CATEGORIES_ADDFORM', "Ajout De Categorie");
-define('TITRE_CATEGORIES_EDITFORM', "Modification De Categories");
+define('TITRE_CATEGORIES_INDEX', "Liste des Categories");
+define('TITRE_CATEGORIES_ADDFORM', "Ajout de Categorie");
+define('TITRE_CATEGORIES_EDITFORM', "Modification de Categories");
 
-define('TITRE_INGREDIENTS_INDEX', "Liste Des Ingrédients");
+define('TITRE_INGREDIENTS_INDEX', "Liste des Ingrédients");

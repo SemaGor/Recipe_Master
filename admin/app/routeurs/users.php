@@ -26,8 +26,7 @@ switch ($_GET['users']):
         break;
 
     case 'editForm':
-        // file_put_contents('debug.txt', "Checking authentication\n", FILE_APPEND);
-
+        
         UsersController\editFormAction($connexion, $_GET['id']);
         break;
     
@@ -36,6 +35,8 @@ switch ($_GET['users']):
         UsersController\editAction($connexion, [
             'user_id' => $_POST['user_id'],
             'user_name' => $_POST['user_name'],
+            'user_email' => $_POST['user_email'],
+            'user_password' => $_POST['user_password'],
             'user_biography' => $_POST['user_biography']
         ]);
         break;

@@ -2,8 +2,6 @@
 
 namespace Core\Tools;
 
-// slugify et truncate
-
 function slugify($str, $delimiter = '-') //il faut changer cette variable en truncate
 {
     // Étape 1 : Conversion des caractères spéciaux

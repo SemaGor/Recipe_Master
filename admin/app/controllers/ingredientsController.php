@@ -15,9 +15,10 @@ function indexAction(\PDO $connexion)
     $allIngredients = IngredientsModel\findAllIngredients($connexion);
 
     global $title, $content;
+
     $title = "Ingrédients";
     ob_start();
-    include '../app/views/ingredients/index.php';
+        include '../app/views/ingredients/index.php';
     $content = ob_get_clean();
 
 }

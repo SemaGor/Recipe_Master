@@ -32,13 +32,13 @@
             <?php echo $allUser['user_name'] ?>
           </td>
           <td>
-            <?php echo $allUser['email'] ?>
+            <?php echo $allUser['user_email'] ?>
           </td>
           <td>
-            <?php echo $allUser['pwd'] ?>
+            <?php echo $allUser['user_password'] ?>
           </td>
           <td>
-            <?php echo $allUser['bio'] ?>
+            <?php echo $allUser['user_biography'] ?>
           </td>
           <td>
             

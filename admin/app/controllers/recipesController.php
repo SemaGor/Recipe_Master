@@ -11,14 +11,16 @@ use App\Models\IngredientsModel;
 function indexAction(\PDO $connexion)
 {
     // Je demande la liste des recettes au modèle
+
     include_once '../app/models/recipesModel.php';
     $allRecipes = recipesModel\findAllRecipes($connexion);
 
     // Je charge la vue index dans $content
+
     global $title, $content;
     $title = "TITRE_RECIPES_INDEX";
     ob_start();
-    include '../app/views/recipes/index.php';
+        include '../app/views/recipes/index.php';
     $content = ob_get_clean();
 
 }
@@ -40,6 +42,7 @@ function addFormAction(\PDO $connexion)
 
     // Je charge la vue recipes/addForm dans $content
     global $title, $content;
+
     $title = "TITRE_RECIPES_ADDFORM";
     ob_start();
         include '../app/views/recipes/addForm.php';
@@ -72,7 +75,7 @@ function deleteAction(\PDO $connexion, int $id)
     // Je demande au modèle de supprimer la recette
     include_once '../app/models/recipesModel.php';
     
-        $return = RecipesModel\delete($connexion,$id);
+    $return = RecipesModel\delete($connexion,$id);
         
     // Je redirige vers la liste des recettes
     header('location: ' . ADMIN_ROOT . '/recipes');
@@ -80,21 +83,21 @@ function deleteAction(\PDO $connexion, int $id)
 
 function editFormAction(\PDO $connexion, int $id)
 {
-    // demande au modèle la recette à afficher dans le formulaire
+    // Je demande au modèle la recette à afficher dans le formulaire
     include_once '../app/models/recipesModel.php';
     $recipe = RecipesModel\findOneById($connexion, $id);
 
-    // cherche le chef de la recette
+    // Je cherche le chef de la recette
     include_once '../app/models/usersModel.php';
     $users = \App\Models\UsersModel\findAllUsers($connexion);
 
-    // chercher les catégories
+    // Je cherche la catégorie de la recette
     include_once '../app/models/categoriesModel.php';
     $categories = \App\Models\CategoriesModel\findAllCategories($connexion);
 
-    // chercher les ingrédients associés à cette recette
+    // je cherche les ingrédients associés à cette recette
     include_once '../app/models/ingredientsModel.php';
-    $ingredients = \App\Models\IngredientsModel\findAllIngredients($connexion, $id);
+    $ingredients = \App\Models\IngredientsModel\findAllIngredients($connexion);
 
     // Je charge la vue editForm dans $content
     global $title, $content;

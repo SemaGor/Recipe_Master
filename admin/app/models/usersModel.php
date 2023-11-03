@@ -13,9 +13,9 @@ function findAllUsers(\PDO $connexion): array
     $sql = "SELECT 
                 u.id AS user_id,
                 u.name AS user_name, 
-                u.email AS email,
-                u.password AS pwd,
-                u.biography AS bio
+                u.email AS user_email,
+                u.password AS user_password,
+                u.biography AS user_biography
             FROM users u
             GROUP BY u.id
             ORDER BY 
@@ -37,6 +37,7 @@ function findOneById(\PDO $connexion, int $id): array
                 u.id AS user_id,
                 u.name AS user_name,
                 u.email AS user_email,
+                u.password AS user_password,
                 u.biography AS user_biography,
                 u.picture AS user_picture,
                 u.created_at AS user_creation_date
@@ -73,8 +74,6 @@ function insert(\PDO $connexion, array $data = null)
 
     return $connexion->lastInsertId();
 }
-
-namespace App\Models\UsersModel;
 
 // Je vérifie si l'utilisateur que je veux supprimer possède des recettes pour pouvoir procéder à une suppression en cascade
 
@@ -116,20 +115,23 @@ function delete(\PDO $connexion, int $id): bool
 function update(\PDO $connexion, array $data)
 {
     $sql = "UPDATE users 
-            SET name = :name,
-                biography = :biography
-            WHERE id = :id;
-           ";
+            SET name = :user_name,
+                email = :user_email,
+                password = :user_password,
+                biography = :user_biography
+            WHERE id = :user_id";
 
     $rs = $connexion->prepare($sql);
     
     // Liaison de la valeur 'user_name' du tableau de données à la variable :name dans la requête SQL.
-    $rs->bindValue(":name", $data["user_name"], \PDO::PARAM_STR);
-
-    $rs->bindValue(":biography", $data["user_biography"], \PDO::PARAM_STR);
+    $rs->bindValue(":user_name", $data["user_name"], \PDO::PARAM_STR);
+    $rs->bindValue(":user_email", $data["user_email"], \PDO::PARAM_STR);
+    $rs->bindValue(":user_password", $data["user_password"], \PDO::PARAM_STR);
+    $rs->bindValue(":user_biography", $data["user_biography"], \PDO::PARAM_STR);
     
+
     // Liaison de la valeur 'user_id' du tableau de données à la variable :id dans la requête SQL.
-    $rs->bindValue(":id", $data["user_id"], \PDO::PARAM_INT);
+    $rs->bindValue(":user_id", $data["user_id"], \PDO::PARAM_INT);
 
     //par exemple où l'id est 3
     // bindValue va dire "prend ce que tu as dans $data['user_name'] et associe le au champ :name de ma table (où l'id est 3) 

@@ -28,7 +28,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="user_biography" class="col-sm-2 col-form-label">Biography</label>
+                    <label for="user_password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="user_password" name="user_password" value="<?php echo $user['user_password']; ?>" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="bio" class="col-sm-2 col-form-label">Biography</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="user_biography" name="user_biography" value="<?php echo $user['user_biography']; ?>" />
                     </div>
