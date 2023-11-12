@@ -2,6 +2,9 @@
 
 namespace App\Models\RecipesModel;
 
+use Core\Tools\truncateDescription;
+use App\Controllers\recipesController;
+
 /**
  * Undocumented function
  *
@@ -9,17 +12,7 @@ namespace App\Models\RecipesModel;
  * @param integer $limit
  * @return string
  */
-function truncateDescription(string $description, int $limit = 3): string
-{
-    $sentences = explode('.', $description);
-    $shortDescription = implode('.', array_slice($sentences, 0, $limit));
 
-    if (count($sentences) > $limit) {
-        $shortDescription .= '...';
-    }
-
-    return $shortDescription;
-}
 
 /**
  * Undocumented function
@@ -30,15 +23,20 @@ function truncateDescription(string $description, int $limit = 3): string
 function findRandomRecipe(\PDO $connexion): array
 {
     $sql = "SELECT 
-                d.*, 
+                d.name AS dish_name,
+                d.id AS id,
+                d.description AS description,
+                d.picture AS dish_picture,
                 u.name AS user_name, 
+                u.picture AS user_picture,
                 ROUND(AVG(r.value), 2) AS avg_rating,
-                COUNT(c.id) AS comment_count
+                COUNT(DISTINCT c.id) AS comment_count,
+                MAX(c.content) AS comment
             FROM dishes d
             LEFT JOIN ratings r ON d.id = r.dish_id
             LEFT JOIN users u ON d.user_id = u.id
             LEFT JOIN comments c ON d.id = c.dish_id
-            GROUP BY d.id, u.name
+            GROUP BY d.id, d.name, d.user_id, d.type_id,d.description,d.picture, u.name,u.picture, r.value, c.content
             ORDER BY RAND()
             LIMIT 1;";
 
@@ -46,10 +44,12 @@ function findRandomRecipe(\PDO $connexion): array
     $recipe = $rs->fetch(\PDO::FETCH_ASSOC);
 
     // Pour remplacer la description originale par la version tronquée
-    $recipe['description'] = truncateDescription($recipe['description']);
+    $recipe['description'] = \Core\Tools\truncateDescription($recipe['description']);
 
     return $recipe;
 }
+
+
 /**
  * Undocumented function
  *
@@ -63,18 +63,22 @@ function findAllPopularRecipes(\PDO $connexion): array
                 d.name AS dish_name,
                 ROUND(AVG(r.value), 2) AS avg_rating,
                 d.description AS description, 
+                d.picture AS dish_picture,
                 u.name AS user_name,
-                COUNT(c.id) AS comment_count,
-                d.picture AS dish_picture
+                u.picture AS user_picture,
+                COUNT(DISTINCT c.id) AS comment_count
             FROM dishes d
             LEFT JOIN ratings r ON d.id = r.dish_id
             LEFT JOIN users u ON d.user_id = u.id
             LEFT JOIN comments c ON d.id = c.dish_id
             GROUP BY 
-                d.id, d.name, 
+                d.id, 
+                d.name, 
+                d.picture,
                 d.description, 
                 u.name, 
-                d.picture
+                u.picture,
+                c.id
             ORDER BY 
                 avg_rating DESC
             LIMIT 3;";
@@ -83,7 +87,7 @@ function findAllPopularRecipes(\PDO $connexion): array
     $recipes = $rs->fetchAll(\PDO::FETCH_ASSOC);
 
     foreach ($recipes as &$recipe) {
-        $recipe['short_description'] = truncateDescription($recipe['description']);
+        $recipe['description'] = \Core\Tools\truncateDescription($recipe['description']);
     }
     return $recipes;
 }
@@ -101,22 +105,24 @@ function findAllRecipes(\PDO $connexion): array
                 ROUND(AVG(r.value), 2) AS avg_rating,
                 d.description AS description, 
                 u.name AS user_name,
-                COUNT(c.id) AS comment_count,
+                COUNT(DISTINCT c.id) AS comment_count,
+                c.content AS comment,
                 d.picture AS dish_picture
             FROM dishes d
             LEFT JOIN ratings r ON d.id = r.dish_id
             LEFT JOIN users u ON d.user_id = u.id
             LEFT JOIN comments c ON d.id = c.dish_id
-            GROUP BY d.id, u.name
+            GROUP BY d.id, d.name, d.description, u.name, c.content, d.picture
             ORDER BY d.created_at DESC
             LIMIT 9;
+
             ";
 
     $rs = $connexion->query($sql);
     $recipes = $rs->fetchAll(\PDO::FETCH_ASSOC);
 
     foreach ($recipes as &$recipe) {
-        $recipe['short_description'] = truncateDescription($recipe['description']);
+        $recipe['description'] = \Core\Tools\truncateDescription($recipe['description']);
     }
     return $recipes;
 }
@@ -130,7 +136,7 @@ function findAllRecipes(\PDO $connexion): array
 function findOneById(\PDO $connexion, int $id): array
 {
     $sql = "SELECT 
-                d.id,
+                d.id AS id,
                 d.name AS dish_name,
                 d.picture AS dish_picture,
                 ROUND(AVG(r.value), 2) AS avg_rating,
@@ -138,16 +144,19 @@ function findOneById(\PDO $connexion, int $id): array
                 d.description AS dish_description,
                 u.name AS user_name,
                 u.picture AS user_picture,
-                COUNT(c.id) AS comment_count,
-                GROUP_CONCAT(i.name SEPARATOR '|') AS ingredients
+                c.content AS comment,
+                COUNT(DISTINCT c.id) AS comment_count,
+                GROUP_CONCAT(DISTINCT i.name) AS ingredient_names,
+                GROUP_CONCAT(DISTINCT i.unit) AS ingredient_units,
+                GROUP_CONCAT(DISTINCT dhi.quantity) AS ingredient_quantities
             FROM dishes d
             LEFT JOIN ratings r ON d.id = r.dish_id
             LEFT JOIN users u ON d.user_id = u.id
             LEFT JOIN comments c ON d.id = c.dish_id
-            LEFT JOIN dishes_has_ingredients di ON d.id = di.dish_id
-            LEFT JOIN ingredients i ON di.ingredient_id = i.id
+            LEFT JOIN dishes_has_ingredients dhi ON d.id = dhi.dish_id
+            LEFT JOIN ingredients i ON dhi.ingredient_id = i.id
             WHERE d.id = :id
-            GROUP BY d.id, u.name;
+            GROUP BY d.id, d.name, d.picture, d.prep_time, d.description, u.name, u.picture, c.content;
             ";
 
     $rs = $connexion->prepare($sql);
@@ -156,41 +165,15 @@ function findOneById(\PDO $connexion, int $id): array
     return $rs->fetch(\PDO::FETCH_ASSOC);
 }
 
-function findAllByUserId(\PDO $connexion, int $user_id): array
+function findAllByUserId(\PDO $connexion, int $id): array
 {
-    $sql = "SELECT 
-                d.id,
-                d.name AS dish_name,
-                ROUND(AVG(r.value), 2) AS avg_rating,
-                d.description AS dish_description,
-                d.prep_time AS prep_time,
-                d.picture AS dish_picture,
-                d.created_at AS dish_creation_date
+    $sql = "SELECT *, 
             FROM dishes d
-            LEFT JOIN ratings r ON d.id = r.dish_id
-            WHERE d.user_id = :user_id
-            GROUP BY d.id
-            ORDER BY d.created_at DESC
-            LIMIT 9;
+            WHERE d.user_id = :id;
             ";
-
-
     $rs = $connexion->prepare($sql);
-    $rs->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
+    $rs->bindValue(':id', $id, \PDO::PARAM_INT);
     $rs->execute();
-
-    $recipesByUser = $rs->fetchAll(\PDO::FETCH_ASSOC);
-
-    foreach ($recipesByUser as &$recipeByUser) {
-        $recipeByUser['short_description'] = truncateDescription($recipeByUser['dish_description']);
-    }
-
-    return $recipesByUser;
-
+    $result = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
 }
-
-
-
-
-
-

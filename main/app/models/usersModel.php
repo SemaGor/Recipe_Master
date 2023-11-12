@@ -47,8 +47,7 @@ function findTopUser(\PDO $connexion): array
  */
 function findLastRecipesByUserId(\PDO $connexion, int $user_id): array
 {
-    $sql = "
-        SELECT 
+    $sql = "SELECT 
             d.id,
             d.name AS dish_name,
             d.created_at,
@@ -59,14 +58,14 @@ function findLastRecipesByUserId(\PDO $connexion, int $user_id): array
             (SELECT ROUND(AVG(value), 2) 
                 FROM ratings 
                 WHERE dish_id = d.id) AS avg_rating
-        FROM dishes d
-        JOIN users u ON d.user_id = u.id
-        LEFT JOIN ratings r ON d.id=r.dish_id
-        WHERE d.user_id = :user_id
-        GROUP BY d.id, d.name, d.created_at, d.picture, d.description, u.picture
-        ORDER BY d.created_at DESC
-        LIMIT 3;
-        ";
+            FROM dishes d
+            JOIN users u ON d.user_id = u.id
+            LEFT JOIN ratings r ON d.id=r.dish_id
+            WHERE d.user_id = :user_id
+            GROUP BY d.id, d.name, d.created_at, d.picture, d.description, u.picture
+            ORDER BY d.created_at DESC
+            LIMIT 3;
+            ";
 
     $rs = $connexion->prepare($sql);
     $rs->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
@@ -87,49 +86,24 @@ function findLastRecipesByUserId(\PDO $connexion, int $user_id): array
 
 function findAllUsers(\PDO $connexion): array
 {
-    $sql = "SELECT 
+    $sql = "SELECT distinct 
+                ROUND(avg(r.value), 1) AS avg_rating, 
+                di.*, 
                 u.id AS user_id,
-                u.name AS user_name, 
-                u.created_at AS registration_date,
+                u.name as user_name,
                 u.picture AS user_picture,
-                COUNT(d.id) AS recipe_count
-            FROM users u
-            LEFT JOIN dishes d ON d.user_id = u.id
-            GROUP BY u.id
+                u.biography as biography,
+                u.picture as user_picture
+            FROM dishes di
+            JOIN users u ON di.user_id = u.id
+            JOIN ratings r ON r.dish_id = di.id
+            GROUP BY di.id
             ORDER BY u.created_at DESC
-            LIMIT 9;
-            ";
-
-    $rs = $connexion->query($sql);
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
-
-    foreach ($recipes as &$recipe) {
-        $recipe['short_description'] = truncateDescription($recipe['description']);
-    }
-    return $recipes;
-}
-
-/**
- * Undocumented function
- *
- * @param \PDO $connexion
- * @return array
- */
-function findAll(\PDO $connexion): array
-{
-    $sql = "SELECT 
-                u.id AS user_id,
-                u.name AS user_name,
-                u.created_at AS user_created_at,
-                COUNT(d.id) AS recipe_count
-            FROM users u
-            LEFT JOIN dishes d ON u.id = d.user_id
-            GROUP BY u.id
-            ORDER BY u.created_at DESC;";
-
+            LIMIT 9;";
     $rs = $connexion->query($sql);
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
 }
+
 /**
  * Undocumented function
  *
@@ -164,15 +138,15 @@ function findCommentsByDishId(\PDO $connexion, int $dish_id): array
  */
 function findOneById(\PDO $connexion, int $id): array
 {
-    $sql = "
-        SELECT 
+    $sql = "SELECT 
+            u.id As user_id,
             u.name AS user_name,
             u.email AS user_email,
             u.biography AS user_biography,
             u.picture AS user_picture,
             u.created_at AS user_creation_date
-        FROM users u
-        WHERE u.id = :id";
+            FROM users u
+            WHERE u.id = :id";
 
     $rs = $connexion->prepare($sql);
     $rs->bindValue(':id', $id, \PDO::PARAM_INT);
@@ -185,12 +159,19 @@ function findOneByLoginPwd(\PDO $connexion, array $data = null)
 {
     $sql = "SELECT *
             FROM users
-            WHERE email = :email
-                AND password = :password;
+            WHERE name = :name;
             ";
     $rs = $connexion->prepare($sql);
-    $rs->bindValue(":email", $data["email"], \PDO::PARAM_STR);
-    $rs->bindValue(":password", $data["password"], \PDO::PARAM_STR);
+    $rs->bindValue(":name", $data["name"], \PDO::PARAM_STR);
     $rs->execute();
     return $rs->fetch(\PDO::FETCH_ASSOC);
+
+    // Vérifier le mot de passe
+    if ($user && password_verify($data['password'], $user['password'])) {
+        // Mot de passe correct
+        return $user;
+    } else {
+        // Mot de passe incorrect ou utilisateur non trouvé
+        return null;
+    }
 }

@@ -3,8 +3,8 @@
 
     <form action="users/login/submit" method="post" class="text-gray-800">
         <div class="mb-4">
-            <label for="pseudo" class="block text-sm font-medium text-gray-300">Pseudo</label>
-            <input type="text" name="pseudo" id="pseudo" required class="mt-1 p-2 w-full border rounded-md">
+            <label for="name" class="block text-sm font-medium text-gray-300">Name</label>
+            <input type="text" name="name" id="name" required class="mt-1 p-2 w-full border rounded-md">
         </div>
 
         <div class="mb-4">

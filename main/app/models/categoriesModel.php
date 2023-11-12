@@ -9,7 +9,7 @@ namespace App\Models\CategoriesModel;
  * @return array
  */
 
-function getAllCategories(\PDO $connexion): array
+function findAllCategories(\PDO $connexion): array
 {
 
     $sql = "SELECT

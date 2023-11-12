@@ -17,7 +17,7 @@ switch ($_GET['users']):
     case 'login':
         include_once '../app/controllers/usersController.php';
         \App\Controllers\UsersController\loginAction($connexion, [
-            'email' => $_POST['pseudo'],
+            'name' => $_POST['name'],
             'password' => $_POST['password']
         ]);
         break;

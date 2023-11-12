@@ -20,7 +20,7 @@ function indexAction(\PDO $connexion)
     global $title, $content;
     $title = "TITRE_RECIPES_INDEX";
     ob_start();
-        include '../app/views/recipes/index.php';
+    include '../app/views/recipes/index.php';
     $content = ob_get_clean();
 
 }
@@ -30,53 +30,53 @@ function addFormAction(\PDO $connexion)
 {
     // je recherche les chefs
     include_once '../app/models/usersModel.php';
-    $allUsers = \App\Models\UsersModel\findAllUsers($connexion);
+    $allUsers = UsersModel\findAllUsers($connexion);
 
     // je recherche les categories
     include_once '../app/models/categoriesModel.php';
-    $allCategories = \App\Models\CategoriesModel\findAllCategories($connexion);
-    
+    $allCategories = CategoriesModel\findAllCategories($connexion);
+
     // je recherche les ingrédients
     include_once '../app/models/ingredientsModel.php';
-    $allIngredients = \App\Models\IngredientsModel\findAllIngredients($connexion);
+    $allIngredients = IngredientsModel\findAllIngredients($connexion);
 
     // Je charge la vue recipes/addForm dans $content
     global $title, $content;
 
     $title = "TITRE_RECIPES_ADDFORM";
     ob_start();
-        include '../app/views/recipes/addForm.php';
+    include '../app/views/recipes/addForm.php';
     $content = ob_get_clean();
 }
 
 
-function addAction(\PDO $connexion,  array $data = null)
+function addAction(\PDO $connexion)
 {
-    // Je demande au modèle d'ajouter la recette
+    //je demande au modèle d'ajouter la recette
     include_once '../app/models/recipesModel.php';
-    
-    $id = RecipesModel\insert($connexion, $data);
+    $id = RecipesModel\insert($connexion, $_POST);
 
-    // Si des ingrédients ont été cochés
-    if (isset($data['ingredients']) && is_array($data['ingredients'])) {
-        foreach ($data['ingredients'] as $ingredientId) {
-            $quantity = $data['quantity-' . $ingredientId];
-            RecipesModel\insertDishIngredients($connexion, $id, $ingredientId, $quantity);
-        }
+    // je demande au modèle d'ajouter les ingredients correspondants
+    foreach ($_POST['ingredients'] as $ingredient_id) {
+        $quantity = $_POST['quantity'][$ingredient_id];
+        $return = RecipesModel\insertIngredientById($connexion, [
+            'dish_id' => $id,
+            'ingredient_id' => $ingredient_id,
+            'quantity' => $quantity
+        ]);
     }
 
     // Je redirige vers la liste des recettes
     header('location: ' . ADMIN_ROOT . '/recipes');
 }
-
 function deleteAction(\PDO $connexion, int $id)
 {
 
     // Je demande au modèle de supprimer la recette
     include_once '../app/models/recipesModel.php';
-    
-    $return = RecipesModel\delete($connexion,$id);
-        
+
+    $return = RecipesModel\delete($connexion, $id);
+
     // Je redirige vers la liste des recettes
     header('location: ' . ADMIN_ROOT . '/recipes');
 }
@@ -107,27 +107,25 @@ function editFormAction(\PDO $connexion, int $id)
     $content = ob_get_clean();
 }
 
-function editAction(\PDO $connexion, array $data = null)
+function editAction(\PDO $connexion,int $id)
 {
-   include_once '../app/models/recipesModel.php';
-   include_once '../app/models/usersModel.php';
-   include_once '../app/models/categoriesModel.php';
-   include_once '../app/models/ingredientsModel.php';
+    // je demande au modèle de supprimer toutes les ingredients correspondents
+    include_once '../app/models/recipesModel.php';
+    $return1 = RecipesModel\deleteDishHasIngredientsById($connexion, $id);
+    
 
-   $data = [
-    'user_id' => $_POST['user_id'],
-    'dish_id' => $_POST['dish_id'],
-    'dish_name' => $_POST['dish_name'],
-    'dish_description' => $_POST['dish_description'],
-    'dish_prep_time' => $_POST['dish_prep_time'],
-    'portions' => $_POST['dish_portions'],
-    'type_id' => $_POST['type_id']
-    ];
+    //je demande au modèle de modifier le dish
+    $return2 = RecipesModel\updateOneById($connexion, $id, $_POST);
 
-   
-   // Je demande au modèle de mettre à jour la recette
-   $return = RecipesModel\update($connexion, $data);
-
-       // La mise à jour a réussi, vous pouvez rediriger ou effectuer d'autres actions.
-       header('location: ' . ADMIN_ROOT . '/recipes');
+    //je demadne au modèle d'ajouter les ingredients correspondents 
+    foreach ($_POST['ingredients'] as $ingredient_id) {
+        $return = RecipesModel\insertIngredientById($connexion, [
+            'dish_id' => $id,
+            'ingredient_id' => $ingredient_id,
+            'quantity' => $quantity
+        ]);
+    }
+ 
+    //rediriger vers la liste des categories
+    header('location: ' . ADMIN_ROOT . '/recipes');
 }

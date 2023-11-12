@@ -6,12 +6,12 @@
 
 <section class="relative mb-6">
 
-  <img class="w-full h-96 object-cover" src="<?php echo $randomRecipe['picture'] ?>" alt="Featured Recipe Image" />
+  <img class="w-full h-96 object-cover" src="<?php echo $randomRecipe['dish_picture'] ?>" alt="Featured Recipe Image" />
 
   <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-gray-900 to-transparent">
 
     <h1 class="text-3xl font-bold mb-2 text-white">
-      <?php echo $randomRecipe['name'] ?>
+      <?php echo $randomRecipe['dish_name'] ?>
     </h1>
 
     <div class="flex items-center mb-4">
@@ -45,7 +45,7 @@
       </span>
     </div>
 
-    <a href="recipes/<?php echo $randomRecipe['id']; ?>/<?php echo Core\tools\slugify($randomRecipe['name']); ?> "
+    <a href="recipes/<?php echo $randomRecipe['id']; ?>/<?php echo Core\tools\slugify($randomRecipe['dish_name']); ?> "
       class="inline-block bg-red-500 hover:bg-red-800 rounded-full px-4 py-2 text-white">
 
       Voir la recette

@@ -35,7 +35,7 @@
         <div class="form-group row">
             <label for="dish_portions" class="col-sm-2 col-form-label">Portions</label>
             <div class="col-sm-10">
-                <input type="number" id="dish_portions" name="dish_portions" value="<?php echo $recipe['dish_portions']; ?>" required>
+                <input type="number" id="dish_portions" name="dish_portions" value="<?php echo $recipe['dish_portions']; ?>">
             </div>
         </div>
     </fieldset>
@@ -87,21 +87,21 @@
     <?php foreach ($allIngredients as $ingredient): ?>
         <div class="form-group row align-items-center">
             <div class="col-md-1">
-                <input type="checkbox" name="ingredients[]" value="<?php echo $ingredient['ingr_id']; ?>"
-                    id="ingredient-<?php echo $ingredient['ingr_id']; ?>">
+                <input type="checkbox" name="ingredients[]" value="<?php echo $ingredient['ingredient_id']; ?>"
+                    id="ingredient-<?php echo $ingredient['ingredient_id']; ?>">
             </div>
-            <label for="ingredient-<?php echo $ingredient['ingr_id']; ?>" class="col-md-3 col-form-label">
-                <?php echo $ingredient['ingr_name']; ?>
+            <label for="ingredient-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-3 col-form-label">
+                <?php echo $ingredient['ingredient_name']; ?>
             </label>
-            <label for="quantity-<?php echo $ingredient['ingr_id']; ?>" class="col-md-2 col-form-label">
+            <label for="quantity-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-2 col-form-label">
                 Quantité :
             </label>
             <div class="col-md-6">
-                <select class="form-control" name="quantity-<?php echo $ingredient['ingr_id']; ?>"
-                    id="quantity-<?php echo $ingredient['ingr_id']; ?>">
+                <select class="form-control" name="quantity<?php echo $ingredient['ingredient_id']; ?>"
+                    id="quantity<?php echo $ingredient['ingredient_id']; ?>">
                     <?php for ($i = 0.5; $i <= 10; $i += 0.5): ?>
                         <option value="<?php echo $i; ?>">
-                            <?php echo $i . " " . $ingredient['ingr_unit']; ?>
+                            <?php echo $i . " " . $ingredient['ingredient_unit']; ?>
                         </option>
                     <?php endfor; ?>
                 </select>

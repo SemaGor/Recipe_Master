@@ -3,30 +3,11 @@
 namespace App\Controllers\UsersController;
 
 use App\Models\UsersModel;
-use App\Models\RecipesModel;
 
-
-function allAction(\PDO $connexion)
-{
-    include_once '../app/models/usersModel.php';
-    $allUsers = UsersModel\findAllUsers($connexion); // Une fonction qui récupère TOUS les utilisateurs, sans LIMIT.
-
-    global $title, $content;
-    $title = "Tous les chefs";
-    ob_start();
-    include '../app/views/users/index.php'; // Utilisez le même fichier de vue ou créez-en un différent si nécessaire.
-    $content = ob_get_clean();
-}
-function indexAction(\PDO $connexion, $id = null)
+function indexAction(\PDO $connexion)
 {
     include_once '../app/models/usersModel.php';
     $allUsers = usersModel\findAllUsers($connexion);
-
-    $recipesByUser = [];
-    if ($id !== null) {
-        include_once '../app/models/recipesModel.php';
-        $recipesByUser = RecipesModel\findAllByUserId($connexion, $id);
-    }
 
     global $title, $content;
     $title = "Users";
@@ -40,10 +21,6 @@ function showAction(\PDO $connexion, int $id)
 {
     include_once '../app/models/usersModel.php';
     $user = UsersModel\findOneById($connexion, $id);
-
-    // Chargement des recettes pour l'utilisateur
-    include_once '../app/models/recipesModel.php';
-    $recipesByUser = RecipesModel\findAllByUserId($connexion, $id);
 
     global $title, $content;
     $title = $user['user_name']; //vient de la bdd
@@ -66,12 +43,12 @@ function loginFormAction(\PDO $connexion)
 
 function loginAction(\PDO $connexion, $data)
 {
-    // je demande le user qui correspond au email/password
+    // je demande le user qui correspond au name/password
     include_once '../app/models/usersModel.php';
     $user = UsersModel\findOneByLoginPwd($connexion, $data);
-
-    // je redirige vers le backoffice si c'est ok
-    if ($user):
+  
+    if ($user && password_verify($data['password'], $user['password'])):
+        // je redirige vers le backoffice, en lui créant une variable de session si c'est ok
         $_SESSION['user'] = $user;
         header('location: ' . ADMIN_ROOT);
         // je redirige vers le loginForm si pas ok

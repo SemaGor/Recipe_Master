@@ -29,6 +29,7 @@
         </span>
         <span class="text-gray-500">
           <i class="fas fa-comment"></i>
+          
           <?php echo $recipe['comment_count']; ?> commentaires
         </span>
       </div>
@@ -39,14 +40,9 @@
       <h2 class="text-2xl font-bold mb-4">Ingrédients</h2>
       <ul class="list-disc pl-5">
         <?php
-        if (isset($recipe['ingredients']) && $recipe['ingredients']) {
-          $ingredientsArray = explode('|', $recipe['ingredients']);
-          foreach ($ingredientsArray as $ingredient) {
-            echo "<li>" . trim($ingredient) . "</li>";
-          }
-        } else {
-          echo "Aucun ingrédient mentionné.";
-        }
+        include_once '../app/models/ingredientsModel.php';
+        $ingredients = \App\Models\IngredientsModel\findAllIngredientsByDishId($connexion, $id);
+        include_once '../app/views/ingredients/_indexByDish.php';
         ?>
       </ul>
     </div>

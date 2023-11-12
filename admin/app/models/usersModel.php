@@ -54,6 +54,8 @@ function findOneById(\PDO $connexion, int $id): array
 function insert(\PDO $connexion, array $data = null)
 {
     $data['created_at'] = date('Y-m-d H:i:s');
+    $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+    
 
     $sql = "INSERT INTO users
             SET name= :name,
@@ -66,7 +68,7 @@ function insert(\PDO $connexion, array $data = null)
     $rs = $connexion->prepare($sql);
     $rs->bindValue(":name", $data["name"], \PDO::PARAM_STR);
     $rs->bindValue(":email", $data["email"], \PDO::PARAM_STR);
-    $rs->bindValue(":password", $data["password"], \PDO::PARAM_STR);
+    $rs->bindValue(":password", $hashedPassword, \PDO::PARAM_STR);
     $rs->bindValue(":biography", $data["biography"], \PDO::PARAM_STR);
     $rs->bindValue(":created_at", $data["created_at"], \PDO::PARAM_STR);
 

@@ -31,7 +31,7 @@ use Core\Tools;
         </div>
 
         <p class="text-gray-600">
-          <?php echo $popularRecipe['short_description'] ?>
+          <?php echo $popularRecipe['short_description'] = \Core\Tools\truncateDescription($popularRecipe['description']);?>
         </p>
 
         <div class="flex items-center mt-4">

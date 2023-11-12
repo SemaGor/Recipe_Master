@@ -8,7 +8,7 @@ use Core\Tools;
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   <!-- Recipe Card -->
-  <?php foreach ($allRecipes as $recipe): ?>
+  <?php foreach ($recipes as $recipe): ?>
     <article class="bg-white rounded-lg overflow-hidden shadow-lg relative">
 
       <img class="w-full h-48 object-cover" src="<?php echo $recipe['dish_picture'] ?>" alt="Recipe Image" />
@@ -32,7 +32,7 @@ use Core\Tools;
         </div>
 
         <p class="text-gray-600">
-          <?php echo $recipe['short_description'] ?>
+          <?php echo $recipe['description']  ?>
         </p>
 
         <div class="flex items-center mt-4">

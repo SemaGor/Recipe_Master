@@ -4,7 +4,7 @@ namespace Core\Tools;
 
 // slugify et truncate
 
-function slugify($str, $delimiter = '-') //il faut changer cette variable en truncate
+function slugify($str, $delimiter = '-') 
 {
     // Étape 1 : Conversion des caractères spéciaux
     $str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
@@ -29,4 +29,15 @@ function slugify($str, $delimiter = '-') //il faut changer cette variable en tru
     $str = strtolower(trim($str, $delimiter));
 
     return $str;
+}
+function truncateDescription(string $description, int $limit = 3)
+{
+    $sentences = explode('.', $description);
+    $shortDescription = implode('.', array_slice($sentences, 0, $limit));
+
+    if (count($sentences) > $limit) {
+        $shortDescription .= '...';
+    }
+
+    return $shortDescription;
 }

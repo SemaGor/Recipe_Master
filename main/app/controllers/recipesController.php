@@ -4,13 +4,12 @@ namespace App\Controllers\RecipesController;
 
 use App\Models\RecipesModel;
 use App\Models\CommentsModel;
-
-
+use App\Models\IngredientsModel;
 
 function indexAction(\PDO $connexion)
 {
     include_once '../app/models/recipesModel.php';
-    $allRecipes = recipesModel\findAllRecipes($connexion);
+    $recipes = recipesModel\findAllRecipes($connexion);
 
     global $title, $content;
     $title = "Recipes";
@@ -25,8 +24,11 @@ function showAction(\PDO $connexion, int $id)
     include_once '../app/models/recipesModel.php';
     $recipe = RecipesModel\findOneById($connexion, $id);
 
-    include_once '../app/models/commentsModel.php';
-    $comments = CommentsModel\findAllCommentsByDishId($connexion, $id);
+    include_once'../app/models/commentsModel.php';
+    $comments = commentsModel\findAllCommentsByDishId($connexion, $id);
+
+    include_once '../app/models/ingredientsModel.php';
+    $ingredients = ingredientsModel\findAllIngredientsByDishId($connexion, $id);
 
     global $title, $content;
     $title = $recipe['dish_name']; //vient de la bdd
