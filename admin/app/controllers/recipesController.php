@@ -117,7 +117,7 @@ function editAction(\PDO $connexion,int $id)
     //je demande au modèle de modifier le dish
     $return2 = RecipesModel\updateOneById($connexion, $id, $_POST);
 
-    //je demadne au modèle d'ajouter les ingredients correspondents 
+    //je demande au modèle d'ajouter les ingredients correspondents 
     foreach ($_POST['ingredients'] as $ingredient_id) {
         $return = RecipesModel\insertIngredientById($connexion, [
             'dish_id' => $id,

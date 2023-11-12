@@ -27,19 +27,6 @@ switch ($_GET['recipes']):
         recipesController\editAction($connexion, $_GET['id']);
         break;
 
-    // case 'edit':
-    //     // Vérifier si la clé "id" existe dans $_GET
-    //     if (isset($_GET['id'])) {
-    //         // Si elle existe, appeler la fonction editAction avec l'id
-    //         recipesController\editAction($connexion, $_GET['id']);
-    //     } else {
-    //         // Si elle n'existe pas, gérer l'erreur ou rediriger l'utilisateur, selon votre logique
-    //         // Par exemple :
-    //         echo "L'identifiant 'id' n'a pas été spécifié.";
-    //     }
-    //     break;
-
-
     case 'index':
         recipesController\indexAction($connexion);
         break;

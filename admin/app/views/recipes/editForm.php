@@ -81,18 +81,29 @@
 
     <fieldset>
     <legend>Ingrédients</legend>
-    <?php include_once '../app/models/ingredientsModel.php';
-        $allIngredients = \App\Models\IngredientsModel\findAllIngredients($connexion); ?>
+    <!-- <?php include_once '../app/models/ingredientsModel.php';
+        // $ingredients = \App\Models\IngredientsModel\findAllIngredients($connexion); ?> -->
 
-    <?php foreach ($allIngredients as $ingredient): ?>
-        <div class="form-group row align-items-center">
-            <div class="col-md-1">
-                <input type="checkbox" name="ingredients[]" value="<?php echo $ingredient['ingredient_id']; ?>"
-                    id="ingredient-<?php echo $ingredient['ingredient_id']; ?>">
-            </div>
-            <label for="ingredient-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-3 col-form-label">
+    <?php foreach ($ingredients as $ingredient): ?>
+        <?php if (!in_array($ingredient['ingredient_id'], $ingredients)): ?> 
+        <!-- // Le code à l'intérieur de cette condition sera exécuté si $ingredient['ingredient_id'] n'est pas présent dans $ingredients. -->
+            <div class="form-group row align-items-center">
+                <div class="col-md-1">
+                    <input type="checkbox" name="ingredients[]" value="<?php echo $ingredient['ingredient_id']; ?>"
+                        id="ingredient-<?php echo $ingredient['ingredient_id']; ?>">
+                </div>
+                <label for="ingredient-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-3 col-form-label">
                 <?php echo $ingredient['ingredient_name']; ?>
             </label>
+        <?php else : ?>
+                <div class="col-md-1">
+                    <input type="checkbox" checked name="ingredients[]" value="<?php echo $ingredient['ingredient_id']; ?>"
+                        id="ingredient-<?php echo $ingredient['ingredient_id']; ?>">
+                </div>
+                <label for="ingredient-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-3 col-form-label">
+                <?php echo $ingredient['ingredient_name']; ?>
+            </label>
+            <?php endif; ?>
             <label for="quantity-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-2 col-form-label">
                 Quantité :
             </label>

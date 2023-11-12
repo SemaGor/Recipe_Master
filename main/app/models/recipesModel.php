@@ -125,6 +125,7 @@ function findAllRecipes(\PDO $connexion): array
         $recipe['description'] = \Core\Tools\truncateDescription($recipe['description']);
     }
     return $recipes;
+   
 }
 /**
  * Undocumented function
@@ -167,13 +168,15 @@ function findOneById(\PDO $connexion, int $id): array
 
 function findAllByUserId(\PDO $connexion, int $id): array
 {
-    $sql = "SELECT *, 
+    $sql = "SELECT d.*, ROUND(AVG(r.value), 2) AS avg_rating
             FROM dishes d
-            WHERE d.user_id = :id;
-            ";
+            LEFT JOIN ratings r ON d.id = r.dish_id
+            WHERE d.user_id = :id
+            GROUP BY d.id";
     $rs = $connexion->prepare($sql);
     $rs->bindValue(':id', $id, \PDO::PARAM_INT);
     $rs->execute();
     $result = $rs->fetchAll(\PDO::FETCH_ASSOC);
     return $result;
 }
+
