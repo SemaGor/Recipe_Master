@@ -70,7 +70,7 @@ RewriteEngine on
     # MODIFICATION DE RECETTE: UPDATE
     # PATTERN: /recipes/edit
     # TARGET: ?recipes=edit
-    RewriteRule ^recipes\/edit$ index.php?recipes=edit [L]
+    RewriteRule ^recipes\/edit\/([1-9][0-9]*)$ index.php?recipes=edit&id=$1 [L]
 
 #--------------------------------------------------
 # ROUTE DES CATEGORIES

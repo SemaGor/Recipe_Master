@@ -70,7 +70,7 @@ function update(\PDO $connexion, int $category_id, array $data)
     return $rs->execute();
    
 }
-// JE N'AI PAS REUSSI A REGLER LE PROBLEME D'OCCURENCE DE LA CATEGORIE A SUPPRIMER DANS LES RECETTES. MA FONCTION DELETE N'EFFACE QUE LES CATEGORIES QUI N'ONT PAS DE RECETTES
+
 
 
 function delete(\PDO $connexion, int $id)
@@ -81,6 +81,8 @@ function delete(\PDO $connexion, int $id)
     $rs->bindValue(':id', $id, \PDO::PARAM_INT);
     return intval($rs->execute());
 }
+// JE N'AI PAS REUSSI A REGLER LE PROBLEME D'OCCURENCE DE LA CATEGORIE A SUPPRIMER DANS LES RECETTES. 
+// MA FONCTION DELETE N'EFFACE QUE LES CATEGORIES QUI N'ONT PAS DE RECETTES
 
 // TENTATIVE N°1 D'EFFACER LES CATEGORIES DANS LES RECETTES
 

@@ -22,16 +22,16 @@
     <?php foreach ($allRecipes as $allRecipe): ?>
       <tr>
         <td>
-          <?php echo $allRecipe['dish_id'] ?>
+          <?php echo $allRecipe['id'] ?>
         </td>
         <td>
-          <?php echo $allRecipe['dish_name'] ?>
+          <?php echo $allRecipe['name'] ?>
         </td>
         <td>
-          <?php echo $allRecipe['dish_prep_time'] ?>
+          <?php echo $allRecipe['time'] ?>
         </td>
         <td>
-          <?php echo $allRecipe['dish_description'] ?>
+          <?php echo $allRecipe['description'] ?>
         </td>
         <td>
           <?php echo $allRecipe['user_name'] ?>
@@ -55,11 +55,11 @@
         </td>
 
         <td>
-          <a href="<?php echo ADMIN_ROOT; ?>/recipes/edit/form/<?php echo $allRecipe['dish_id'] ?>" 
+          <a href="<?php echo ADMIN_ROOT; ?>/recipes/edit/form/<?php echo $allRecipe['id'] ?>" 
              class="edit">
              Modifier
           </a>
-          <a href="<?php echo ADMIN_ROOT; ?>/recipes/delete/<?php echo $allRecipe['dish_id'] ?>" 
+          <a href="<?php echo ADMIN_ROOT; ?>/recipes/delete/<?php echo $allRecipe['id'] ?>" 
              class="btn btn-danger">
              Supprimer
           </a>

@@ -12,7 +12,7 @@ use App\Models\CategoriesModel;
 function indexAction(\PDO $connexion)
 {
     include_once '../app/models/categoriesModel.php';
-    $allCategories = CategoriesModel\getAllCategories($connexion);
+    $allCategories = CategoriesModel\findAllCategories($connexion);
 
     global $title, $content;
     $title = "Categories";

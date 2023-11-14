@@ -6,36 +6,36 @@
     <a href="<?php echo ADMIN_ROOT; ?>/recipes">Retour à la liste des recettes</a><br><br>
 </div>
 
-<form action="<?php echo ADMIN_ROOT; ?>/recipes/edit" method="post" class="edit">
+<form action="<?php echo ADMIN_ROOT; ?>/recipes/edit/<?php echo $recipe['id']; ?>" method="post" class="edit">
     <fieldset>
         <legend>Données de la Recette</legend>
         
         <div class="form-group row">
             <label for="dish_name" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="dish_name" name="dish_name" value="<?php echo $recipe['dish_name']; ?>" required>
-                <input type="hidden" id="dish_id" name="dish_id" value="<?php echo $recipe['dish_id']; ?>">
+                <input type="text" class="form-control" id="dish_name" name="name" value="<?php echo $recipe['name']; ?>" required>
+                <input type="hidden" id="dish_id" name="dish_id" value="<?php echo $recipe['id']; ?>">
             </div>
         </div>
 
         <div class="form-group row">
             <label for="dish_description" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
-                <input type="text" id="dish_description" name="dish_description" value="<?php echo $recipe['dish_description']; ?>">
+                <input type="text" id="dish_description" name="description" value="<?php echo $recipe['description']; ?>">
             </div>
         </div>
 
         <div class="form-group row">
             <label for="dish_prep_time" class="col-sm-2 col-form-label">Time</label>
             <div class="col-sm-10">
-                <input type="text" id="dish_prep_time" name="dish_prep_time" value="<?php echo $recipe['dish_prep_time']; ?>">
+                <input type="text" id="dish_prep_time" name="time" value="<?php echo $recipe['time']; ?>">
             </div>
         </div>
 
         <div class="form-group row">
             <label for="dish_portions" class="col-sm-2 col-form-label">Portions</label>
             <div class="col-sm-10">
-                <input type="number" id="dish_portions" name="dish_portions" value="<?php echo $recipe['dish_portions']; ?>">
+                <input type="number" id="dish_portions" name="portions" value="<?php echo $recipe['portions']; ?>">
             </div>
         </div>
     </fieldset>
@@ -67,7 +67,7 @@
         $allCategories = \App\Models\CategoriesModel\findAllCategories($connexion); ?>
             <label for="type_id" class="col-sm-2 col-form-label">Catégorie</label>
             <div class="col-sm-10">
-                <select class="form-control" name="type_id" id="type_id">
+                <select class="form-control" name="category_id" id="type_id">
                     <?php foreach ($allCategories as $category): ?>
                         <option value="<?php echo $category['category_id']; ?>"
                             <?php if ($category['category_id'] === $recipe['category_id']) echo 'selected'; ?>>
@@ -81,16 +81,16 @@
 
     <fieldset>
     <legend>Ingrédients</legend>
-    <!-- <?php include_once '../app/models/ingredientsModel.php';
-        // $ingredients = \App\Models\IngredientsModel\findAllIngredients($connexion); ?> -->
+    
+       
 
     <?php foreach ($ingredients as $ingredient): ?>
         <?php if (!in_array($ingredient['ingredient_id'], $ingredients)): ?> 
         <!-- // Le code à l'intérieur de cette condition sera exécuté si $ingredient['ingredient_id'] n'est pas présent dans $ingredients. -->
             <div class="form-group row align-items-center">
                 <div class="col-md-1">
-                    <input type="checkbox" name="ingredients[]" value="<?php echo $ingredient['ingredient_id']; ?>"
-                        id="ingredient-<?php echo $ingredient['ingredient_id']; ?>">
+                    <input type="checkbox"name="ingredients[]" value="<?php echo $ingredient['ingredient_id'] ; ?>"
+                        chacked id="ingredient-<?php echo $ingredient['ingredient_id']; ?>">
                 </div>
                 <label for="ingredient-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-3 col-form-label">
                 <?php echo $ingredient['ingredient_name']; ?>
@@ -104,6 +104,7 @@
                 <?php echo $ingredient['ingredient_name']; ?>
             </label>
             <?php endif; ?>
+            
             <label for="quantity-<?php echo $ingredient['ingredient_id']; ?>" class="col-md-2 col-form-label">
                 Quantité :
             </label>

@@ -5,9 +5,10 @@ namespace App\Models\RecipesModel;
 function findAllRecipes(\PDO $connexion): array 
 {
     $sql = "SELECT 
-                d.id AS dish_id,
-                d.name AS dish_name,
-                d.prep_time AS dish_prep_time,
+                d.id AS id,
+                d.name AS name,
+                d.prep_time AS time,
+                d.description As description,
                 d.portions AS portions,
                 d.type_id AS dish_type,
                 d.user_id AS user_id,
@@ -37,11 +38,11 @@ function findAllRecipes(\PDO $connexion): array
 function findOneById(\PDO $connexion, int $id): array
 {
     $sql = "SELECT 
-            d.id AS dish_id,
-            d.name AS dish_name,
-            d.description AS dish_description,
-            d.prep_time AS dish_prep_time,
-            d.portions AS dish_portions,
+            d.id AS id,
+            d.name AS name,
+            d.description AS description,
+            d.prep_time AS time,
+            d.portions AS portions,
             d.type_id AS category_id,
             t.name AS category_name,
             u.name as user_name, 
@@ -74,7 +75,7 @@ function insert(\PDO $connexion, array $data): int
     $sql = "INSERT INTO dishes
             SET name = :name,
                 description = :description,
-                prep_time = :prep_time,
+                prep_time = :time,
                 portions = :portions,
                 user_id = :user_id,
                 type_id = :type_id,
@@ -83,7 +84,7 @@ function insert(\PDO $connexion, array $data): int
     $rs = $connexion->prepare($sql);
     $rs->bindValue(':name', $data['name'], \PDO::PARAM_STR);
     $rs->bindValue(':description', $data['description'], \PDO::PARAM_STR);
-    $rs->bindValue(':prep_time', $data['prep_time'], \PDO::PARAM_STR);
+    $rs->bindValue(':time', $data['time'], \PDO::PARAM_STR);
     $rs->bindValue(':portions', $data['portions'], \PDO::PARAM_INT);
     $rs->bindValue(':user_id', $data['user_id'], \PDO::PARAM_INT);
     $rs->bindValue(':type_id', $data['type_id'], \PDO::PARAM_INT); 
@@ -97,13 +98,13 @@ function insert(\PDO $connexion, array $data): int
 function insertDishIngredients(\PDO $connexion, int $id, int $ingredient_id,string $quantity) 
 {
     $sql = "INSERT INTO dishes_has_ingredients 
-            SET dish_id = :dish_id,
+            SET dish_id = :id,
                 ingredient_id = :ingredient_id, 
                 quantity = :quantity;";
     
     $rs = $connexion->prepare($sql);
     
-    $rs->bindValue(':dish_id', $id, \PDO::PARAM_INT);
+    $rs->bindValue(':id', $id, \PDO::PARAM_INT);
     $rs->bindValue(':ingredient_id', $ingredient_id, \PDO::PARAM_INT);
     $rs->bindValue(':quantity', $quantity, \PDO::PARAM_STR);
     $rs->execute();
@@ -143,14 +144,14 @@ function deleteDishHasIngredientsById(\PDO $connexion, int $id): bool
 
 function updateOneById(\PDO $connexion, int $id, array $data)
 {
-
+// var_dump($data); 
     $sql = "UPDATE dishes
-            SET name = :dish_name,
+            SET name = :name,
                 description=:description,
-                prep_time = :dish_prep_time,
-                portions = :dish_portions,
-                user_id = :user_name,
-                type_id = :category_name
+                prep_time = :time,
+                portions = :portions,
+                user_id = :user_id,
+                type_id = :category_id
                 WHERE id = :id ;";
     $rs = $connexion->prepare($sql);
     $rs->bindValue(':id', $id, \PDO::PARAM_INT);
@@ -158,8 +159,8 @@ function updateOneById(\PDO $connexion, int $id, array $data)
     $rs->bindValue(':description', $data['description'], \PDO::PARAM_STR);
     $rs->bindValue(':time', $data['time'], \PDO::PARAM_STR);
     $rs->bindValue(':portions', $data['portions'], \PDO::PARAM_INT);
-    $rs->bindValue(':user_name', $data['user_name'], \PDO::PARAM_INT);
-    $rs->bindValue(':category_name', $data['category_name'], \PDO::PARAM_INT);
+    $rs->bindValue(':user_id', $data['user_id'], \PDO::PARAM_INT);
+    $rs->bindValue(':category_id', $data['category_id'], \PDO::PARAM_INT);
 
     return $rs->execute();
 }

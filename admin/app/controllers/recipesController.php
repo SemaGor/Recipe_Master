@@ -122,7 +122,7 @@ function editAction(\PDO $connexion,int $id)
         $return = RecipesModel\insertIngredientById($connexion, [
             'dish_id' => $id,
             'ingredient_id' => $ingredient_id,
-            'quantity' => $quantity
+            'quantity' => $_POST['quantity'.$ingredient_id]
         ]);
     }
  
